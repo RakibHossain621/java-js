@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>here is background color code</h1>
+    <input type="text" id="output"><br>
+    <button onclick="rakib()">button code</button>
+</body>
+
+<script>
+function rakib(){
+    let output = document.getElementById("output");
+        let red =Math.floor(Math.random()*255);
+        let green = Math.floor(Math.random()*255);
+        let blue = Math.floor(Math.random()*255);
+        output.style.backgroundColor=`#${red.toString(16)}${green.toString(16)}${blue.toString(16)}`
+        console.log(`#${red.toString(16)}${green.toString(16)}${blue.toString(16)}`)
+        output.value=`#${red.toString(16)}${green.toString(16)}${blue.toString(16)}`
+
+        navigator.clipboard.writeText(output.value).then(function() {
+        console.log('Copied to clipboard');
+    }, function(err) {
+        console.error('Could not copy text: ', err);
+    });
+
+}
+
+</script>
+</html>

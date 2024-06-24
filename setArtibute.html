@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #div {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="div"></div>
+    <button onclick="rakib()">Color</button>
+    <script>
+        function rakib() {
+            // if(x.style.backgroundColor=="red"){
+            //     x.style.backgroundColor="green";
+              // }
+            // else{
+          //    x.style.backgroundColor="red";
+         // }
+            let x = document.getElementById("div");
+            console.log(x.style.backgroundColor); // Debugging line to check the current background color
+            switch (x.style.backgroundColor) {
+                case "red":
+                    x.style.backgroundColor = "green";
+                    break;
+                case "green":
+                    x.style.backgroundColor = "red";
+                    break;
+                default:
+                    x.style.backgroundColor = "red"; // Set a default color if not already set
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>

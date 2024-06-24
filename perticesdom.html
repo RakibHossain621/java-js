@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p id="demo">I Love Bangladesh</p>
+    <button onclick="rakib()">Change</button>
+</body>
+<script>
+    function rakib(){
+      let  demo =  document.getElementById("demo");
+        let red = Math.floor(Math.random() *255);
+        let yello = Math.floor(Math.random() *255);
+        let blue = Math.floor(Math.random() *255);
+        demo.style.background= `rgb(${red},${yello},${blue})`
+    }
+</script>
+</html>

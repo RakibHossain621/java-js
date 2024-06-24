@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p id="demo"></p>
+    <button onclick="rakib()">First value add</button>
+</body>
+<script>
+    var x=["mango","apple","Banana","orange","licci"];
+    document.getElementById("demo").innerHTML=x;
+    function rakib(){
+        x.unshift("computer","ups");
+        document.getElementById("demo").innerHTML=x;
+    }
+</script>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        font-family: sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .container{
+        text-align: center;
+    }
+    .timer{
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+
+    button{
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        margin: 5px;
+    }
+</style>
+<body>
+   <div class="container">
+    <h1>Mindful Breathing Timer</h1>
+    <div class="timer" id="timer">Breath In</div>
+    <button id="start-Btn">Start</button>
+    <button id="stop-Btn">Stop</button>
+   </div>
+</body>
+<script>
+let timeLeft;
+let timerInterval;
+let isRunning = false;
+const displayTimer = document.getElementById('timer');
+const startBtn = document.getElementById('start-Btn');
+const stopBtn = document.getElementById ('stop-Btn');
+
+const startTimer = (duration)=>{
+    let timer = duration;
+    timerInterval = setInterval(()=>{
+     const minute = parseInt(timer / 60, 10);
+     const second = parseInt(timer % 60, 10);
+
+     const displayMinute = minute <10 ? '0' + minute : minute;
+     const displayScond =  second <10 ? '0' + second : second;
+
+     displayTimer.textContent = displayMinute + ':' + displayScond;
+
+     if(--timer <0){
+        clearInterval(timerInterval);
+        displayTimer.textContent = 'Breath Out';
+
+        setTimeout(()=>{
+        displayTimer.textContent = 'Breath In';
+        startTimer(timeLeft);
+        }, 3000)
+     }
+
+   }, 1000)
+}
+
+const stopTimer = ()=>{
+    clearInterval(timerInterval);
+    displayTimer.textContent = 'Breath In'
+    isRunning = false;
+}
+startBtn.addEventListener('click', ()=>{
+    if(!isRunning){
+        timeLeft = 15;
+        startTimer(timeLeft);
+        isRunning = true;
+    }
+})
+
+stopBtn.addEventListener('click', ()=>{
+    stopTimer();
+    isRunning = false;
+})
+</script>
+</html>

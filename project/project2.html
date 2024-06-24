@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RGB Color Genarate</title>
+</head>
+<style>
+    body{
+        text-align: center;
+    }
+    #colorBox{
+        width: 200px;
+        height: 200px;
+        border: 2px solid black;
+        margin: 0 auto;
+    }
+    #copybutton{
+        background-color: rgba(0, 128, 0, 0.699);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin-top: 1em;
+    }
+    #copybutton:hover{
+        background-color: rgba(0, 128, 0, 0.863);
+    }
+    #colorcode{
+        font-size: 20px;
+    }
+</style>
+<body>
+   <h1>RGB Color Genarator</h1>
+   <div id="colorBox"></div>
+   <p id="colorcode"></p>
+    <button onclick="GenaRateColorBtn()">Genarate new color</button><br>
+    <button id="copybutton">Copy Color Code</button>
+    <p id="copyMessage">Color code copied to clipboard!</p>
+</body>
+<script>
+    const GenarateRGBColor = () => {
+        const r = Math.floor(Math.random() * 255);
+        const g = Math.floor(Math.random() * 255);
+        const b = Math.floor(Math.random() * 255);
+
+        return `rgb(${r}, ${g}, ${b})`;
+    };
+
+    const updateColor = () => {
+        const color = GenarateRGBColor();
+        const colorBox = document.getElementById('colorBox');
+        colorBox.style.backgroundColor = color;
+        const colorCode = document.getElementById('colorcode');
+        colorCode.innerHTML = color;
+    };
+
+
+    const CopyColorCode = () => {
+        const colorCode = document.getElementById('colorcode');
+        const inputTag = document.createElement('input');
+        document.body.appendChild(inputTag);
+        inputTag.value = colorCode.innerText;
+        inputTag.select();
+        document.execCommand('copy');
+        document.body.removeChild(inputTag);
+
+        
+       
+        
+    };
+    
+    // Show copy message
+    const copyMessage = document.getElementById('copyMessage');
+    copyMessage.style.display = 'none';
+    
+    const copybutton = document.getElementById('copybutton');
+
+    copybutton.addEventListener('click', () => {
+        CopyColorCode();
+
+        // Hide the message after 2 seconds
+        
+        setTimeout(() => {
+            copyMessage.style.display = 'block';
+        }, 1000);
+    });
+
+   function GenaRateColorBtn(){
+    updateColor();
+   }
+
+</script>
+</script>
+
+</html>

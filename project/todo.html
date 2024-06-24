@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To do</title>
+</head>
+<style>
+
+ button{
+    margin-bottom: 1em;
+ }
+ .modal{
+    display: none;
+ }
+</style>
+<body>
+    <button id="add">add your Task</button><br>
+    <div class="modal" id="modal">
+        <div class="container-Task">
+        <h1>Add Your Task</h1>
+        <input id="taskInput" type="text" placeholder="Add your Task"><br><br>
+        <input type="file" id="file"><br><br>
+        <textarea  id="description">description</textarea><br><br>
+        <button onclick="addTask()">Add</button>
+        <button onclick="deletedCheckd()">Delete checked</button>
+        <ul id="taskList"></ul>
+    </div>
+    </div>
+</body>
+  <script>
+     const add = document.getElementById('add');
+     const modal = document.getElementById('modal')
+     add.addEventListener('click' , ()=>{
+        
+    if(modal.style.display == 'none' || modal.style.display ==''){
+       modal.style.display = 'block'
+    }else{
+        modal.style.display = 'none' 
+    }
+     })
+   
+     const addTask = () => {
+            const taskInput = document.getElementById('taskInput');
+            const taskInputValue = taskInput.value.trim();
+            const description = document.getElementById('description').value.trim();
+            const file = document.getElementById('file').files[0];
+            
+            if (taskInputValue !== '') {
+                const taskListUl = document.getElementById('taskList');
+                const li = document.createElement('li');
+                li.style.listStyle = 'none'
+                let taskContent = '<input type="checkbox">' + taskInputValue;
+                
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const image = '<img src="' + e.target.result + '" alt="Task Image" width="40" height="40">';
+                        li.innerHTML = image + ' ' + taskContent + ' - ' + description + ' <button onclick="deleteTask(this)">Delete</button>';
+                        taskListUl.appendChild(li);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    li.innerHTML = taskContent + ' - ' + description + ' <button onclick="deleteTask(this)">Delete</button>';
+                    taskListUl.appendChild(li);
+                }
+                
+                taskInput.value = '';
+                document.getElementById('description').value = '';
+                document.getElementById('file').value = '';
+            } else {
+                alert('Please add Your Task');
+            }
+
+        }
+        const deleteTask = (btn) => {
+            const li = btn.parentNode;
+            li.parentNode.removeChild(li);
+        }
+
+        const deletedCheckd = () => {
+            const taskList = document.getElementById('taskList');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+
+            checkboxes.forEach(checkbox => {
+                const li = checkbox.parentNode;
+                li.parentNode.removeChild(li);
+            });
+        }
+  </script>
+</html>
+
+

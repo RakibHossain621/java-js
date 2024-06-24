@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prompt method</title>
+</head>
+<body>
+    <!-- <h1>The Window Object</h1>
+    <p>Click the button to demonstrate the prompt box.</p>
+
+<button onclick="myFunction()">Try it</button>
+
+<p id="demo"></p> -->
+
+<script>
+// function myFunction() {
+//   let person = prompt("Please enter your name", "Harry Potter");
+//   if (person != null) {
+//     document.getElementById("demo").innerHTML =
+//     "Hello " + person + "! How are you today?";
+//   }
+// }
+var input=new Array()
+for(var x=0; x<=3; x++){
+    input[x]=prompt("Enter The value")
+}
+document.write(input)
+</script>
+
+</body>
+</html>
+
+
+<!-- pop method er kaj holo Last theke value delete kora  -->
+    <p id="demo"></p>
+    <button onclick="rakib()">Delete</button>
+</body>
+<script>
+    var x=["computer","monitor","dekstop","Laptop"];
+    document.getElementById("demo").innerHTML=x;
+    function rakib(){
+        x.pop();
+        document.getElementById("demo").innerHTML=x;
+    }
+</script>
+
+
+<!-- push er kaj holo data add kora  -->
+  <p id="demo"></p>
+  <button onclick="rakib()">add</button>
+</body>
+<script>
+     var x=["computer","monitor","dekstop","Laptop"];
+     document.getElementById("demo").innerHTML=x;
+     function rakib(){
+     x.push("ram","ups");
+     document.getElementById("demo").innerHTML=x;
+     }
+</script>
+
+<!-- shift method er kaj holo First theke value delete kora  -->
+    <p id="demo"></p>
+    <button onclick="rakib()">Delete</button>
+</body>
+<script>
+    var x=["computer","monitor","dekstop","Laptop"];
+    document.getElementById("demo").innerHTML=x;
+    function rakib(){
+        x.shift();
+        document.getElementById("demo").innerHTML=x;
+    }

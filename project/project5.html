@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do-List</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Your Task</h1>
+        <input id="taskInput" type="text" placeholder="Add your Task">
+        <button onclick="addTask()">Add</button>
+        <button onclick="deletedCheckd()">Delete checked</button>
+        <ul id="taskList"></ul>
+       </div>
+</body>
+<script>
+    const addTask = ()=>{
+        const taskInput = document.getElementById('taskInput');
+        const taskInputValue = taskInput.value.trim();
+
+        if(taskInputValue !== ''){
+        const taskListUl = document.getElementById('taskList');
+        const li = document.createElement('li');
+        li.innerHTML = ' <input type="checkbox">' + taskInputValue + ' <button onclick="deleteTask(this)">Delete</button>' ;
+        taskListUl.appendChild (li);
+        // clear input value
+        taskInput.value = '';
+        // clear input value
+        }else{
+            alert('Please add Your Task')
+        }
+    }
+
+    const deleteTask = (btn)=>{
+    const li =   btn.parentNode;
+    li.parentNode.removeChild(li);
+    }
+
+    const deletedCheckd = () =>{
+      const TaskList = document.getElementById('taskList');
+     const checkBoxces = document.querySelectorAll('input[type ="checkbox"]:checked');
+
+     checkBoxces.forEach(checkbox =>{
+        const li = checkbox.parentNode;
+        li.parentNode.removeChild(li);
+     })
+
+    }
+</script>
+</html>

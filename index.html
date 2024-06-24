@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    function rakib(){
+        var input=document.getElementById("Employe").value;
+        var outPutValue=document.getElementById("output_value")
+        switch(input){
+            case '645158':outPutValue.innerHTML=`<img src='dahlia-red-blossom-bloom-60597.webp'/> <br> Name-Rakib Hossain <br> Id- 645158 <br> Address-Pabna Sador  `
+            break;
+            default:document.write("This is invild Entry")
+        }
+    }
+</script>
+<body>
+    <input type="text" placeholder="Search....." id="Employe"><button onclick="rakib()">search</button>
+    <div id="output_value">
+    </div>
+</body>
+</html>

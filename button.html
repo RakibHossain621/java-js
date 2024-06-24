@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .div1 {
+        display: none;
+        width: 200px;
+        height: 100px;
+        background: red;
+
+    }
+
+    .app {              
+        margin-left: 161px;
+    }
+</style>
+
+<body>
+    <button id="btn">read more</button>
+    <div class="div1">
+        <button class="app">+++</button>
+    </div>
+
+
+
+    <script>
+        const btn = document.querySelector("#btn");
+
+        const div1 = document.querySelector(".div1");
+        btn.addEventListener("click", function (e) {
+            e.preventDefault();
+            if (div1.style.display == 'none' || div1.style.display =='') {
+                div1.style.display = 'block';
+            } else {
+                div1.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>

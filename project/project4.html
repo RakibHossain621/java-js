@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পাঠ্য নিষ্কাশন</title>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.1/dist/tesseract.min.js"></script>
+</head>
+<body>
+    <input type="file" id="image" accept="image/*">
+    <button id="extract-btn">Extract</button>
+    <div id="output"></div>
+
+    <script>
+        const extractText = () => {
+            const fillInput = document.getElementById('image');
+            const outputDiv = document.getElementById('output');
+            const imageFile = fillInput.files[0];
+
+            if (!imageFile) {
+                outputDiv.textContent = 'Please insert your image';
+                return;
+            }
+
+            outputDiv.textContent = 'prossing please wait...';
+
+            Tesseract.recognize(
+                imageFile,
+                'eng',
+            ).then(({ data }) => {
+                outputDiv.textContent = data.text;
+            }).catch((error) => {
+                console.error('error', error);
+                outputDiv.textContent = '';
+            });
+        }
+
+        document.getElementById('extract-btn').addEventListener('click', extractText);
+    </script>
+</body>
+</html>

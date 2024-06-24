@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genarate Random Password</title>
+</head>
+<body>
+    <h1>Random Genarate Password</h1>
+    <label for="LengthPass">password Length:</label>
+    <input type="number"  id="LengthPass" min="1" value="8">
+    <button onclick="genaratePassword()">Genarate password</button>
+    <div id="showPassword"></div>
+
+</body>
+<script>
+const genaratePassword = ()=>{
+   const LengthPass = document.getElementById('LengthPass').value;
+   const charset = "abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ0123456789~@#$%^&*()!+=-_"
+    let randomPassword = '';
+   for(let i = 0; i<LengthPass; i++){
+   const randomIndex =    Math.round(Math.random() * charset.length);
+   const randomChar =  charset[randomIndex];
+   randomPassword += randomChar;
+   }
+  document.getElementById('showPassword').innerHTML = randomPassword ;
+}
+</script>
+</html>
