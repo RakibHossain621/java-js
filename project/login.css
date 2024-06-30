@@ -83,3 +83,7 @@ li {
     text-align: center;
     margin-bottom: 20px;
 }
+
+.login_btn:disabled{
+    opacity: 0.5;
+}

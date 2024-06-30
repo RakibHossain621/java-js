@@ -4,81 +4,152 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To do</title>
+    <style>
+        button {
+            margin-bottom: 1em;
+        }
+        .modal {
+            display: none;
+        }
+        .modal.show {
+            display: flex;
+        }
+    </style>
 </head>
-<style>
-
- button{
-    margin-bottom: 1em;
- }
- .modal{
-    display: none;
- }
-</style>
 <body>
-    <button id="add">add your Task</button><br>
+    <button id="add">Add your Task</button>
     <div class="modal" id="modal">
         <div class="container-Task">
-        <h1>Add Your Task</h1>
-        <input id="taskInput" type="text" placeholder="Add your Task"><br><br>
-        <input type="file" id="file"><br><br>
-        <textarea  id="description">description</textarea><br><br>
-        <button onclick="addTask()">Add</button>
-        <button onclick="deletedCheckd()">Delete checked</button>
-        <ul id="taskList"></ul>
+            <h1>Add Your Task</h1>
+            <input id="taskInput" type="text" placeholder="Add your Task"><br>
+            <input type="file" id="file"><br>
+            <textarea id="description" placeholder="Description"></textarea><br>
+            <input type="text" placeholder="category" id="category"><br>
+            <button class="addBtn" onclick="addTask()">Add</button>
+            <button onclick="deletedChecked()">Delete checked</button>
+            <ul id="taskList"></ul>
+        </div>
     </div>
-    </div>
-</body>
-  <script>
-     const add = document.getElementById('add');
-     const modal = document.getElementById('modal')
-     add.addEventListener('click' , ()=>{
+
+    <script>
+       let todos;
+
+window.onload = function () {
+    (async () => {
+        try {
+            const response = await fetch('https://rakib-bhai-api.onrender.com/all-todos');
+            const tasks = await response.json();
+            console.log(tasks.todos);
+            todos = tasks.todos;
+
+            if (todos && todos.length > 0) {
+                const taskListUl = document.getElementById('taskList');
+                todos.forEach(task => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <div class="task-content">
+                            <span class="task-text">${task.title}</span>
+                            <span class="task-description">${task.description}</span>
+                            <span class="task-category">${task.category}</span>
+                        </div>
+                        <input type="checkbox">
+                        <button onclick="editTask(this)">Edit</button>
+                        <button onclick="deleteTask(this)">Delete</button>`;
+                    taskListUl.appendChild(li);
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching tasks:', error);
+        }
+    })();
+}
+
         
-    if(modal.style.display == 'none' || modal.style.display ==''){
-       modal.style.display = 'block'
-    }else{
-        modal.style.display = 'none' 
-    }
-     })
-   
-     const addTask = () => {
+        document.getElementById('add').addEventListener('click', function () {
+            const modal = document.getElementById('modal');
+            modal.classList.add('show');
+        });
+
+        async function addTask() {
             const taskInput = document.getElementById('taskInput');
             const taskInputValue = taskInput.value.trim();
-            const description = document.getElementById('description').value.trim();
-            const file = document.getElementById('file').files[0];
-            
-            if (taskInputValue !== '') {
-                const taskListUl = document.getElementById('taskList');
-                const li = document.createElement('li');
-                li.style.listStyle = 'none'
-                let taskContent = '<input type="checkbox">' + taskInputValue;
-                
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        const image = '<img src="' + e.target.result + '" alt="Task Image" width="40" height="40">';
-                        li.innerHTML = image + ' ' + taskContent + ' - ' + description + ' <button onclick="deleteTask(this)">Delete</button>';
-                        taskListUl.appendChild(li);
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    li.innerHTML = taskContent + ' - ' + description + ' <button onclick="deleteTask(this)">Delete</button>';
-                    taskListUl.appendChild(li);
-                }
-                
-                taskInput.value = '';
-                document.getElementById('description').value = '';
-                document.getElementById('file').value = '';
-            } else {
-                alert('Please add Your Task');
-            }
+            const fileInput = document.getElementById('file').files[0];
+            const descriptionInput = document.getElementById('description').value.trim();
+            const categoryInput = document.getElementById('category').value.trim();
+            const token = localStorage.getItem("acces_token");
 
+            const formData = new FormData();
+            formData.append('title', taskInputValue);
+            if (fileInput) {
+                formData.append('image', fileInput);
+            }
+            formData.append('description', descriptionInput);
+            formData.append('category', categoryInput);
+
+            try {
+                const response = await fetch('https://7e90-103-118-78-162.ngrok-free.app/create-todo', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    }
+                });
+
+                console.log('Request sent:', response);
+
+                const result = await response.json();
+
+                console.log('Response received:', result);
+
+                if (response.ok && response.status === 201) {
+                    if (taskInputValue !== '' || fileInput || descriptionInput !== '' || categoryInput !== '') {
+                        const taskListUl = document.getElementById('taskList');
+                        const li = document.createElement('li');
+                        if (fileInput) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                const imageUrl = e.target.result;
+                                li.innerHTML = `
+                                    <div class="task-content">
+                                        <span class="task-text">${taskInputValue}</span>
+                                        <span class="task-description">${descriptionInput}</span>
+                                        <span class="task-category">${categoryInput}</span>
+                                        <img src="${imageUrl}" alt="Task Image" width="20" height="20">
+                                    </div>
+                                    <input type="checkbox">
+                                    <button onclick="editTask(this)">Edit</button>
+                                    <button onclick="deleteTask(this)">Delete</button>`;
+                                taskListUl.appendChild(li);
+                            };
+                            reader.readAsDataURL(fileInput);
+                        } else {
+                            li.innerHTML = `
+                                <div class="task-content">
+                                    <span class="task-text">${taskInputValue}</span>
+                                    <span class="task-description">${descriptionInput}</span>
+                                    <span class="task-category">${categoryInput}</span>
+                                </div>
+                                <input type="checkbox">
+                                <button onclick="editTask(this)">Edit</button>
+                                <button onclick="deleteTask(this)">Delete</button>`;
+                            taskListUl.appendChild(li);
+                        }
+                    } else {
+                        alert('Please add your task, file, or description.');
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while creating the task.');
+            }
         }
-        const deleteTask = (btn) => {
+
+        function deleteTask(btn) {
             const li = btn.parentNode;
             li.parentNode.removeChild(li);
         }
 
-        const deletedCheckd = () => {
+        function deletedChecked() {
             const taskList = document.getElementById('taskList');
             const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
 
@@ -87,7 +158,20 @@
                 li.parentNode.removeChild(li);
             });
         }
-  </script>
+
+        function editTask(btn) {
+            const li = btn.parentNode;
+            const taskText = li.querySelector('.task-text').innerText;
+            const taskDescription = li.querySelector('.task-description').innerText;
+            const taskCategory = li.querySelector('.task-category').innerText;
+            const taskImage = li.querySelector('img') ? li.querySelector('img').src : '';
+
+            document.getElementById('taskInput').value = taskText;
+            document.getElementById('description').value = taskDescription;
+            document.getElementById('category').value = taskCategory;
+
+            li.parentNode.removeChild(li);
+        }
+    </script>
+</body>
 </html>
-
-

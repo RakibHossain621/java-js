@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add to Cart</title>
+</head>
+<body>
+    <input type="text" placeholder="Enter Your Product name" id="product"><br><br>
+    <input type="text" placeholder="Enter Your description" id="description"><br><br>
+    <input type="text" placeholder="Enter Your Price" id="price"><br><br>
+    <button onclick="addToCart()">Add to cart</button>
+    <button onclick="deleteCart()">Delete cart</button>
+    <p id="demo"></p>
+</body>
+
+<script>
+    let cart = [];
+
+    function addToCart() {
+        const product = document.getElementById('product').value.trim();
+        const description = document.getElementById('description').value.trim();
+        const price = parseFloat(document.getElementById('price').value.trim());
+
+        if (!product || !description || isNaN(price)) {
+            alert('Please enter valid product details.');
+            return;
+        }
+
+        cart.push({ product, description, price });
+        updateCart();
+
+        document.getElementById('product').value = '';
+        document.getElementById('description').value = '';
+        document.getElementById('price').value = '';
+    }
+   
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    function deleteCart() {
+        cart = [];
+        updateCart();
+    }
+
+    function updateCart() {
+        let cartHTML = '<ul>';
+        const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+        const tax = totalPrice * 0.05;
+        const finalPrice = totalPrice + tax;
+
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        cart.forEach((item, index) => {
+            cartHTML += `<li>${item.product} - ${item.description} - $${item.price.toFixed(2)}
+                <button onclick="editPrice(${index})">Edit Price</button></li>`;
+        });
+
+        cartHTML += '</ul>';
+        cartHTML += `<p>Total Price: $${totalPrice.toFixed(2)}</p>`;
+        cartHTML += `<p>Tax (5%): $${tax.toFixed(2)}</p>`;
+        cartHTML += `<p>Final Price $${finalPrice.toFixed(2)}</p>`;
+
+        document.getElementById('demo').innerHTML = cartHTML;
+    }
+
+    function editPrice(index) {
+        const newPrice = parseFloat(prompt('Enter new price:'));
+        
+        if (!isNaN(newPrice)) {
+            cart[index].price = newPrice;
+            updateCart();
+            localStorage.setItem('cart', JSON.stringify(cart));
+        } else {
+            alert('Please enter a valid price.');
+        }
+    }
+
+    window.onload = function() {
+            updateCart();
+        };
+</script>
+</html>
